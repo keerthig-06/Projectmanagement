@@ -9,7 +9,6 @@ function App() {
 
     // Correct Backend API URL
     const API = "https://projectmanagement-dezx.onrender.com/tasks";
-
     // Get all tasks
     const getTasks = async () => {
         try {
