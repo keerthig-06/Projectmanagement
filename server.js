@@ -1,3 +1,4 @@
+
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -8,13 +9,17 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Connect to MongoDB
+// MongoDB Atlas Connection
 mongoose
-    .connect("mongodb://127.0.0.1:27017/taskmanager")
-    .then(() => console.log("MongoDB connected"))
-    .catch((err) => console.log("MongoDB connection error:", err));
+    .connect(process.env.MONGO_URI)
+    .then(() => {
+        console.log("MongoDB connected successfully");
+    })
+    .catch((err) => {
+        console.log("MongoDB connection error:", err);
+    });
 
-// Define Task Schema
+// Task Schema
 const TaskSchema = new mongoose.Schema(
     {
         title: {
@@ -30,10 +35,15 @@ const TaskSchema = new mongoose.Schema(
     { timestamps: true }
 );
 
-// Create Task Model
+// Task Model
 const Task = mongoose.model("Task", TaskSchema);
 
-// Get all tasks
+// Home Route
+app.get("/", (req, res) => {
+    res.send("Project Management Backend is Running!");
+});
+
+// Get All Tasks
 app.get("/tasks", async (req, res) => {
     try {
         const tasks = await Task.find();
@@ -46,7 +56,7 @@ app.get("/tasks", async (req, res) => {
     }
 });
 
-// Create a new task
+// Create New Task
 app.post("/tasks", async (req, res) => {
     try {
         const { title } = req.body;
@@ -62,7 +72,9 @@ app.post("/tasks", async (req, res) => {
         });
 
         const savedTask = await newTask.save();
+
         res.status(201).json(savedTask);
+
     } catch (err) {
         console.error("Error creating task:", err);
         res.status(400).json({
@@ -71,7 +83,7 @@ app.post("/tasks", async (req, res) => {
     }
 });
 
-// Update task status
+// Update Task Status
 app.patch("/tasks/:id", async (req, res) => {
     try {
         const updatedTask = await Task.findByIdAndUpdate(
@@ -87,6 +99,7 @@ app.patch("/tasks/:id", async (req, res) => {
         }
 
         res.json(updatedTask);
+
     } catch (err) {
         console.error("Error updating task:", err);
         res.status(400).json({
@@ -95,7 +108,7 @@ app.patch("/tasks/:id", async (req, res) => {
     }
 });
 
-// Delete a task
+// Delete Task
 app.delete("/tasks/:id", async (req, res) => {
     try {
         const deletedTask = await Task.findByIdAndDelete(
@@ -111,6 +124,7 @@ app.delete("/tasks/:id", async (req, res) => {
         res.json({
             message: "Task deleted successfully."
         });
+
     } catch (err) {
         console.error("Error deleting task:", err);
         res.status(400).json({
@@ -119,7 +133,7 @@ app.delete("/tasks/:id", async (req, res) => {
     }
 });
 
-// Start server
+// Start Server
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
