@@ -6,7 +6,7 @@ function App() {
     const [tasks, setTasks] = useState([]);
     const [title, setTitle] = useState("");
 
-    const API = "http://localhost:5000/tasks";
+    const API = "https://projectmanagement-dezx.onrender.com/";
 
     // Get tasks from backend
     const getTasks = async () => {
