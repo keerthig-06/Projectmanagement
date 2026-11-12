@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./App.css";
@@ -6,7 +7,7 @@ function App() {
     const [tasks, setTasks] = useState([]);
     const [title, setTitle] = useState("");
 
-    const API = "https://projectmanagement-dezx.onrender.com/";
+    const API = "https://projectmanagement-dezx.onrender.com/tasks";
 
     // Get tasks from backend
     const getTasks = async () => {
@@ -35,6 +36,7 @@ function App() {
             getTasks();
         } catch (error) {
             console.log("Error adding task:", error);
+            alert("Could not add task. Please try again.");
         }
     };
 
@@ -45,6 +47,7 @@ function App() {
             getTasks();
         } catch (error) {
             console.log("Error updating task:", error);
+            alert("Could not update task.");
         }
     };
 
@@ -55,6 +58,7 @@ function App() {
             getTasks();
         } catch (error) {
             console.log("Error deleting task:", error);
+            alert("Could not delete task.");
         }
     };
 
