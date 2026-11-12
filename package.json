@@ -1,10 +1,12 @@
+
 {
   "homepage": "https://keerthig-06.github.io/Projectmanagement",
   "name": "project-management",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "predeploy": "npm run build --prefix task-manager-frontend",
     "deploy": "gh-pages -d task-manager-frontend/build"
