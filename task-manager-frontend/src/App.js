@@ -7,9 +7,10 @@ function App() {
     const [tasks, setTasks] = useState([]);
     const [title, setTitle] = useState("");
 
-    const API = "https://projectmanagement-dezx.onrender.com";
+    // Correct Backend API URL
+    const API = "https://projectmanagement-dezx.onrender.com/tasks";
 
-    // Get tasks from backend
+    // Get all tasks
     const getTasks = async () => {
         try {
             const response = await axios.get(API);
@@ -23,7 +24,7 @@ function App() {
         getTasks();
     }, []);
 
-    // Add a new task
+    // Add Task
     const addTask = async () => {
         if (!title.trim()) {
             alert("Please enter a task!");
@@ -31,16 +32,20 @@ function App() {
         }
 
         try {
-            await axios.post(API, { title });
+            await axios.post(API, { title: title });
+
+            alert("Task added successfully!");
+
             setTitle("");
             getTasks();
+
         } catch (error) {
             console.log("Error adding task:", error);
-            alert("Could not add task. Please try again.");
+            alert("Could not add task. Check Console.");
         }
     };
 
-    // Update task status
+    // Update Task
     const updateTask = async (id, status) => {
         try {
             await axios.patch(API + "/" + id, { status });
@@ -51,7 +56,7 @@ function App() {
         }
     };
 
-    // Delete a task
+    // Delete Task
     const deleteTask = async (id) => {
         try {
             await axios.delete(API + "/" + id);
@@ -99,9 +104,7 @@ function App() {
                             <option value="Completed">Completed</option>
                         </select>
 
-                        <button
-                            onClick={() => deleteTask(task._id)}
-                        >
+                        <button onClick={() => deleteTask(task._id)}>
                             Delete
                         </button>
                     </div>
